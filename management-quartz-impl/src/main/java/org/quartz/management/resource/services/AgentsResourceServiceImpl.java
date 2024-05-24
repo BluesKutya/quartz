@@ -8,8 +8,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.ws.rs.Path;
-import javax.ws.rs.core.UriInfo;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.core.UriInfo;
 
 import org.quartz.management.service.EntityResourceFactory;
 import org.terracotta.management.ServiceLocator;

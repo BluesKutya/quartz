@@ -17,18 +17,11 @@
 
 package org.quartz.jobs.ee.ejb;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.rmi.RemoteException;
 import java.util.Hashtable;
 
-import javax.ejb.EJBHome;
-import javax.ejb.EJBMetaData;
-import javax.ejb.EJBObject;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
-import javax.rmi.PortableRemoteObject;
 
 import org.quartz.Job;
 import org.quartz.JobDataMap;
@@ -123,128 +116,8 @@ public class EJBInvokerJob implements Job {
      * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      */
 
-    public void execute(JobExecutionContext context)
-        throws JobExecutionException {
-        JobDataMap dataMap = context.getMergedJobDataMap();
-
-        String ejb = dataMap.getString(EJB_JNDI_NAME_KEY);
-        String method = dataMap.getString(EJB_METHOD_KEY);
-        Object[] arguments = (Object[]) dataMap.get(EJB_ARGS_KEY);
-        if (arguments == null) {
-            arguments = new Object[0];
-        }
-
-        if (ejb == null) { 
-            // must specify remote home
-            throw new JobExecutionException(); 
-        }
-
-        InitialContext jndiContext = null;
-
-        // get initial context
-        try {
-            jndiContext = getInitialContext(dataMap);
-        } catch (NamingException ne) {
-            throw new JobExecutionException(ne);
-        }
-             
-        try {
-            Object value = null;
-            
-            // locate home interface
-            try {
-                value = jndiContext.lookup(ejb);
-            } catch (NamingException ne) {
-                throw new JobExecutionException(ne);
-            } 
-    
-            // get home interface
-            EJBHome ejbHome = (EJBHome) PortableRemoteObject.narrow(value,
-                    EJBHome.class);
-    
-            // get meta data
-            EJBMetaData metaData = null;
-    
-            try {
-                metaData = ejbHome.getEJBMetaData();
-            } catch (RemoteException re) {
-                throw new JobExecutionException(re);
-            }
-    
-            // get home interface class
-            Class<?> homeClass = metaData.getHomeInterfaceClass();
-    
-            // get remote interface class
-            Class<?> remoteClass = metaData.getRemoteInterfaceClass();
-    
-            // get home interface
-            ejbHome = (EJBHome) PortableRemoteObject.narrow(ejbHome, homeClass);
-    
-            Method methodCreate = null;
-    
-            try {
-                // create method 'create()' on home interface
-                methodCreate = homeClass.getMethod("create", ((Class[])null));
-            } catch (NoSuchMethodException nsme) {
-                throw new JobExecutionException(nsme);
-            }
-    
-            // create remote object
-            EJBObject remoteObj = null;
-    
-            try {
-                // invoke 'create()' method on home interface
-                remoteObj = (EJBObject) methodCreate.invoke(ejbHome, ((Object[])null));
-            } catch (IllegalAccessException iae) {
-                throw new JobExecutionException(iae);
-            } catch (InvocationTargetException ite) {
-                throw new JobExecutionException(ite);
-            }
-    
-            // execute user-specified method on remote object
-            Method methodExecute = null;
-    
-            try {
-                // create method signature
-    
-                Class<?>[] argTypes = (Class[]) dataMap.get(EJB_ARG_TYPES_KEY);
-                if (argTypes == null) {
-                    argTypes = new Class[arguments.length];
-                    for (int i = 0; i < arguments.length; i++) {
-                        argTypes[i] = arguments[i].getClass();
-                    }
-                }
-    
-                // get method on remote object
-                methodExecute = remoteClass.getMethod(method, argTypes);
-            } catch (NoSuchMethodException nsme) {
-                throw new JobExecutionException(nsme);
-            }
-    
-            try {
-                // invoke user-specified method on remote object
-                Object returnObj = methodExecute.invoke(remoteObj, arguments);
-                
-                // Return any result in the JobExecutionContext so it will be 
-                // available to Job/TriggerListeners
-                context.setResult(returnObj);
-            } catch (IllegalAccessException iae) {
-                throw new JobExecutionException(iae);
-            } catch (InvocationTargetException ite) {
-                throw new JobExecutionException(ite);
-            }
-        } finally {
-            // Don't close jndiContext until after method execution because
-            // WebLogic requires context to be open to keep the user credentials
-            // available.  See JIRA Issue: QUARTZ-401
-            if (jndiContext != null) {
-                try {
-                    jndiContext.close();
-                } catch (NamingException e) {
-                    // Ignore any errors closing the initial context
-                }
-            }
-        }
+    public void execute(JobExecutionContext context) throws JobExecutionException {
+        throw new JobExecutionException("Not implemented less than EJB3");
     }
 
     protected InitialContext getInitialContext(JobDataMap jobDataMap)

@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.quartz-scheduler</groupId>
     <artifactId>quartz-parent</artifactId>
-    <version>2.3.2-SNAPSHOT</version>
+    <version>2.3.2-JAKARTA</version>
   </parent>
 
   <groupId>org.quartz-scheduler</groupId>
@@ -20,16 +20,14 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.apache.openejb</groupId>
-      <artifactId>javaee-api</artifactId>
-      <version>6.0-5</version>
-      <scope>provided</scope>
+      <groupId>jakarta.ejb</groupId>
+      <artifactId>jakarta.ejb-api</artifactId>
+      <version>4.0.1</version>
     </dependency>
     <dependency> 
-      <groupId>javax.mail</groupId>
-      <artifactId>mail</artifactId>
-      <version>1.4.7</version>
-      <scope>provided</scope>
+      <groupId>jakarta.mail</groupId>
+      <artifactId>jakarta.mail-api</artifactId>
+      <version>2.1.1</version>
     </dependency>    
     <dependency>
       <groupId>org.subethamail</groupId>

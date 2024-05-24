@@ -32,9 +32,9 @@ import java.util.concurrent.CyclicBarrier;
 
 import javax.management.MBeanServer;
 import javax.management.ObjectName;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 public class BasicTestServlet extends HttpServlet {
 

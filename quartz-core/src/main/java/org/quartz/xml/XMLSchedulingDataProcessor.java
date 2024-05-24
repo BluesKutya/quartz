@@ -26,12 +26,9 @@ import static org.quartz.TriggerKey.triggerKey;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.URL;
-import java.net.URLDecoder;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -69,7 +66,7 @@ import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
-import javax.xml.bind.DatatypeConverter;
+import jakarta.xml.bind.DatatypeConverter;
 
 
 /**
@@ -202,7 +199,7 @@ public class XMLSchedulingDataProcessor implements ErrorHandler {
               return XMLConstants.NULL_NS_URI;
           }
         
-          public Iterator<?> getPrefixes(String namespaceURI)
+          public Iterator<String> getPrefixes(String namespaceURI)
           {
               // This method isn't necessary for XPath processing.
               throw new UnsupportedOperationException();
